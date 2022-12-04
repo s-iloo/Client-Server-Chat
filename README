@@ -1,0 +1,4 @@
+Ian Loo (iloo)
+
+Note: didn't use the set_verbosity(int level) function because I tried to use 
+it but it didn't do anything differently to my code
