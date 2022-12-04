@@ -2,3 +2,45 @@ Ian Loo (iloo)
 
 Note: didn't use the set_verbosity(int level) function because I tried to use 
 it but it didn't do anything differently to my code
+
+DESCRIPTION:
+  mytalk is a program that allows a user on one machine to send and recieve
+  messages from another user on another machine. To do this, it splits the
+  screen into two parts, displaying the remote user's text in the top half
+  and the local user's in the lower half. mytalk's connections are managed
+  by a talk daemon, a process that exists in the background, waits for
+  network connections, then asks the targeted user if they want to talk.
+
+FUNCTIONS NOT DEFINED:
+  void start_windowing()
+    Turns on the ncurses windows if stdin and stdout are ttys. Does nothing if
+    they are not.
+
+  void stop_windowing()
+    Turns off the ncurses windows if they are on. Nothing otherwise.
+
+  int read_from_input(char *buf, size_t len)
+    If windowing is enabled, read up to len-1 bytes from the input window,
+    otherwise read from stdin using fgets(3). The buffer will be null-term-
+    inated and will include the final newline if it exists and fits. Returns
+    the number of bytes read on success, 0 on EOF, and ERR on error. (ncurses
+    doesn't actually define any error conditions. If the internal buffer does
+    not include full line, blocks until there is one or EOF
+
+  int write_to_output(const char *buf, size_t len)
+    If windowing is enabled, write len bytes to the output, otherwise write
+    to stdout (using fputs(3)). Returns OK on success and ERR on failure.
+
+  void update_input_buffer()
+    If windowing is enabled, update the library's internal buffer as far as
+    the next newline or EOF in a nonblocking fashion. Does nothing if
+    windowing is disabled.
+
+  int has_whole_line()
+    If windowing is enabled, return TRUE if the library's buffer holds a whole
+    line ready to read, FALSE otherwise. Returns TRUE if windowing is disabled.
+
+  int has_hit_eof()
+    If windowing is enabled, return TRUE if the library has encountered EOF
+    while reading, FALSE otherwise. Calls feof(stdin) if windowing is disabled
+
